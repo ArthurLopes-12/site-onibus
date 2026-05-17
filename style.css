@@ -1,0 +1,98 @@
+body{
+    margin: 0;
+}
+
+/* Logo do cabeçalho */
+header img{
+    height: 90px;
+}
+
+/* Cabeçalho */
+header{
+    background-color: lightblue;
+
+    height: 90px;
+
+    padding: 0px 20px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+
+/* Div onde está o campo de texto e o botão de buscar linha*/
+.buscar_linha{
+    width: 50%;
+
+    padding: 20px;
+    border-radius: 15px;
+
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+}
+
+/* Campo de texto da linha*/
+#campo_digita{
+    width: 50%;
+
+    background-color: white;
+
+    padding: 9px 18px;
+    border-radius: 20px;
+
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+
+    display: flex;
+
+    outline: none;
+    border: 2px solid blue; /* Espessura, tipo da linha e cor */
+    
+}
+
+/* Manter a cor da borda do texto de busca quando o usuário estiver em modo focus*/
+#campo_digita:focus{   
+    outline: none; 
+    border: 2px solid blue;
+}
+
+/* Botão de busca da linha */
+#botao_buscar{
+    width: 20%;
+
+    background-color: white;
+
+    outline: none;
+    border: 2px solid white;
+    border-radius: 10px;
+
+}
+
+/* Aqui começa a parte principal do site*/ 
+.hero{
+    display: flex;
+
+    background-color: rgb(1, 46, 75);
+
+    height: 100vh;
+    gap: 30px;
+
+    align-items: center;
+    justify-content: center;
+}
+
+/*Configurações da visualização do mapa (Leaflet)*/
+#map {
+
+    width: 600px;
+    height: 425px;
+    border-radius: 15px;
+    display: flex;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+
+}
+
+/*Fim das configurações de mapa :)*/
