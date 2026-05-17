@@ -54,6 +54,18 @@ function atualizarMapa()
     {
         const bus = ONIBUS[i];
 
+        if(linhaBuscada !== null)
+        {      
+            const linha = String(bus.NL).trim();
+            const buscando = String(linhaBuscada).trim();
+
+            if(!linhaDoOnibus.includes(buscando))
+            {
+                continue;
+            }
+
+
+        }
         //console.log(bus);
 
         // TESTE TEMPORÁRIO
@@ -145,7 +157,7 @@ function PointParaLatLng(point) {
 async function atualizarOnibus()
 {   
     // lembrando que a proxy do lucas tava dando erro.
-    const urlAPI = "https://proxy.corsfix.com/?https://temporeal.pbh.gov.br/?param=D";
+    const urlAPI = "https://api.allorigins.win/raw?url=https://temporeal.pbh.gov.br/?param=D";
 
     try
     {
@@ -246,5 +258,29 @@ function carregarPONTOS()
     });
 }
 
+// Guarda o filtro ativo (null = mostrar todos)
+let linhaBuscada = null;
+
+function buscarLinha()
+{
+    // Pega o texto digitado e remove espaços extras
+    const texto = document.getElementById("campo_digita").value.trim();
+
+    // Se estiver vazio, mostra todos
+    if(texto === "")
+    {
+        linhaBuscada = null;
+    }
+    else
+    {
+        linhaBuscada = texto;
+    }
+
+    // Redesenha o mapa com o filtro aplicado
+    atualizarMapa();
+}
+
+// Conecta o botão ao buscarLinha
+document.getElementById("botao_buscar").addEventListener("click", buscarLinha);
 
 iniciarapp();

@@ -1,34 +1,41 @@
 body{
     margin: 0;
     padding: 0;
-   
 }
 
-/*  Header  */
-
-header{
-    background-color: lightblue;
-
-    padding: 15px 25px;
-}
-
-/* Logo */
+/* Logo do cabeçalho */
 header img{
     height: 90px;
 }
 
-/* Div da busca de linha */
+/* Cabeçalho */
+header{
+    background-color: lightblue;
+
+    height: 90px;
+
+    padding: 15px 25px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Div onde está o campo de texto e o botão de buscar linha */
 .buscar_linha{
     width: 100%;
 
-    display: flex;
-    justify-content: end;
-    align-items: center;
+    padding: 20px;
+    border-radius: 15px;
 
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: end;
     gap: 15px;
 }
 
-/* Campo de texto */
+/* Campo de texto da linha */
 #campo_digita{
     width: 60%;
     max-width: 400px;
@@ -36,62 +43,67 @@ header img{
     background-color: white;
 
     padding: 10px 18px;
-
     border-radius: 20px;
-
-    outline: none;
-    border: 2px solid blue;
 
     box-shadow: 0 0 20px rgba(0,0,0,0.15);
 
+    display: flex;
+
+    outline: none;
+    border: 2px solid blue;
 }
 
-/* Isso aqui serve pra quando o usuário for digitar pra não ficar sumindo a cor da borda */
+/* Manter a cor da borda do texto de busca quando o usuário estiver em modo focus */
 #campo_digita:focus{
+    outline: none;
     border: 2px solid rgb(0, 68, 255);
 }
 
-/* Botão */
+/* Botão de busca da linha */
 #botao_buscar{
     background-color: white;
 
     padding: 10px 18px;
-
     border-radius: 12px;
 
+    outline: none;
     border: none;
 
     font-weight: bold;
-
 }
 
 /* Dar animação pro botão quando passar o mouse por cima */
 #botao_buscar:hover{
-    background-color: rgb(240,240,240);
-
+    background-color: rgb(240, 240, 240);
     transform: scale(1.03);
 }
 
-/* Hero */
-
+/* Aqui começa a parte principal do site */
 .hero{
+    display: flex;
+
     background-color: rgb(1, 46, 75);
 
-    display: flex;
-    justify-content: center;
+    height: 100vh;
+    gap: 30px;
+
     align-items: center;
+    justify-content: center;
 
     padding: 30px;
 }
 
-/* Mapa */
-
+/* Configurações da visualização do mapa (Leaflet) */
 #map{
-    width: 700px;
-
-    height: 500px;
-
+    width: 80vw;
+    max-width: 1200px;
+    height: 80vh;
+    max-height: 900px;
     border-radius: 15px;
-
+    display: block;
+    position: relative;
+    box-sizing: border-box;
     box-shadow: 0 0 20px rgba(0,0,0,0.3);
 }
+
+/* Fim das configurações de mapa :) */
