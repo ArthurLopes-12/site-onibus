@@ -1,14 +1,11 @@
 body{
     margin: 0;
     padding: 0;
-   
 }
 
-/*  Header  */
-
+/* Header */
 header{
     background-color: lightblue;
-
     padding: 15px 25px;
 }
 
@@ -43,7 +40,6 @@ header img{
     border: 2px solid blue;
 
     box-shadow: 0 0 20px rgba(0,0,0,0.15);
-
 }
 
 /* Isso aqui serve pra quando o usuario for digitar pra nao ficar sumindo a cor da borda */
@@ -62,18 +58,16 @@ header img{
     border: none;
 
     font-weight: bold;
-
 }
 
 /* Dar animacao pro botao quando passar o mouse por cima */
 #botao_buscar:hover{
-    background-color: rgb(240,240,240);
+    background-color: rgb(240, 240, 240);
 
     transform: scale(1.03);
 }
 
 /* Hero */
-
 .hero{
     background-color: rgb(1, 46, 75);
 
@@ -81,17 +75,23 @@ header img{
     justify-content: center;
     align-items: center;
 
+    min-height: calc(100vh - 120px);
+
     padding: 30px;
 }
 
 /* Mapa */
-
 #map{
-    width: 700px;
+    width: 80vw;
+    max-width: 1200px;
 
-    height: 500px;
+    height: 80vh;
+    max-height: 900px;
 
     border-radius: 15px;
+
+    position: relative;
+    box-sizing: border-box;
 
     box-shadow: 0 0 20px rgba(0,0,0,0.3);
 }
