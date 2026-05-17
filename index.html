@@ -3,80 +3,43 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="style.css">
+    
     <title>Disnara Transportes</title>
 
-    <!-- Bibliotecas -->
-    <!-- Leaflet -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <!--Bootstrap-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <!--proj4js-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.19.10/proj4.js" integrity="sha512-QXAXxYhXWvAc5fA3edU2rOQANjhwKAAlqz1WEhh/FXzODQoqVb9PkHqJcCG7aFoJpN0VQMNnxOBztoIQOcEO5w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!-- PapaParse -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.min.js"></script>
-    <!----------------->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <!--Ícone-->
+    <!-- CSS das bibliotecas -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin="">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+          crossorigin="anonymous">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <header>
-        <div class="logo">
-            <!--Mudança: vc pode usar / para dizer que quer pegar um arquivo na msm pasta que a página em HTML-->
-            <img src="imgs/disnaratransporte.png" alt="Logo">
-        </div>
-        
-<div class="buscar_linha" href="">
-            <input type="text" id="campo_digita" placeholder="Digite a linha">
-           
-            <button id="botao_buscar">
-                Buscar linha
-            </button>
-    
-          </div>
-    </header>
-
-        <main></main>
-    <section class ="hero">
-
-
-    <!--Aqui vai ser desenhado o mapa-->
-
-         <div id="map"></div>
-        
-        </div>
-    
-          </div>
-        
-          
-    </section>
-
-    </main>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-    <script src="app.js"></script>
-
-    <!-- Bootstrap -->
-     <header class="container-fluid py-3">
+    <!-- Cabeçalho -->
+    <header class="container-fluid py-3">
 
         <div class="row align-items-center">
 
             <!-- Logo -->
             <div class="col-md-4 text-center text-md-start">
-
                 <img src="imgs/disnaratransporte.png"
                      alt="Logo"
                      class="img-fluid"
                      style="max-height: 90px;">
-
             </div>
 
             <!-- Busca -->
             <div class="col-md-8">
-
                 <div class="d-flex gap-2 justify-content-md-end justify-content-center mt-3 mt-md-0">
 
                     <input type="text"
@@ -84,32 +47,41 @@
                            class="form-control w-auto"
                            placeholder="Digite a linha">
 
-                    <button id="botao_buscar"
-                            class="btn btn-primary">
-
+                    <button id="botao_buscar" class="btn btn-primary">
                         Buscar linha
-
                     </button>
 
                 </div>
-
             </div>
 
         </div>
 
     </header>
 
-    <!-- Mapa -->
-    <section class="container py-4">
+    <!-- area principal -->
+    <main>
+        <section class="hero">
+            <div id="map"></div>
+        </section>
+    </main>
 
-        <div id="map"></div>
+    <!-- scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
 
-    </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.19.10/proj4.js"
+            integrity="sha512-QXAXxYhXWvAc5fA3edU2rOQANjhwKAAlqz1WEhh/FXzODQoqVb9PkHqJcCG7aFoJpN0VQMNnxOBztoIQOcEO5w=="
+            crossorigin="anonymous"></script>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.min.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            crossorigin="anonymous"></script>
+
+    <!-- codigo -->
     <script src="app.js"></script>
-    </header>
+
 </body>
 </html>

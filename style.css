@@ -87,10 +87,14 @@ header{
 /*Configurações da visualização do mapa (Leaflet)*/
 #map {
 
-    width: 600px;
-    height: 425px;
+    width: 80vw;
+    max-width: 1200px;
+    height: 80vh;
+    max-height: 900px;
     border-radius: 15px;
-    display: flex;
+    display: block;
+    position: relative;
+    box-sizing: border-box;
     box-shadow: 0 0 15px rgba(0,0,0,0.3);
 
 }

@@ -80,7 +80,12 @@ function atualizarMapa()
             }
         );
         
-        marcador.bindPopup("Ônibus");
+        // popup q mostra informacoes reais do onibus
+        marcador.bindPopup(`
+    <b>Linha:</b> ${bus.NL ?? "N/A"} <br>
+    <b>Veículo:</b> ${bus.NV ?? "N/A"} <br>
+    <b>Velocidade:</b> ${bus.VL ?? "N/A"} km/h
+    `);
 
         marcador.addTo(mapa);
 
@@ -93,7 +98,9 @@ function atualizarMapa()
 
 async function carregarMapa()
 {
-    mapa.setView(PONTOS.Posicao[0], 15);
+    // CORRIGIDO: busca a primeira posição válida para não quebrar se a primeira for nula
+    const primeiraPosicaoValida = PONTOS.Posicao.find(p => p !== null && !isNaN(p[0]));
+    mapa.setView(primeiraPosicaoValida, 15);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
@@ -136,18 +143,18 @@ function PointParaLatLng(point) {
 
 //Carregar API
 async function atualizarOnibus()
-{
+{   
+    // lembrando que a proxy do lucas tava dando erro.
     const urlAPI = "https://proxy.corsfix.com/?https://temporeal.pbh.gov.br/?param=D";
 
     try
     {
         const response = await fetch(urlAPI);
         const data = await response.json();
-        //console.log(data);
-
-        //const ids = data.map(bus => bus.c);
-        //const duplicados = ids.filter((id, i) => ids.indexOf(id) !== i);
-        //console.log("Duplicados:", duplicados.length, data[0]); // <--
+        
+ // ADICIONA ISSO TEMPORARIAMENTE
+        console.log("Primeiro ônibus:", data[0]);
+        console.log("Todos os campos:", Object.keys(data[0]));
 
         // LIMPA ônibus antigos
         ONIBUS = [];
