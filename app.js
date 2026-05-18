@@ -21,8 +21,21 @@ const busIcon = L.icon({
 
 let ONIBUS = [];
 let marcadores_onibus = [];
+let marcadores_pontos = [];
+let marcadorProximo = null;
 
 const mapa = L.map('map');
+
+// Guarda o filtro ativo (null = mostrar todos)
+let linhaBuscada = null;
+
+// Normaliza o código da linha para comparação
+// Remove espaços, deixa maiúsculo e remove zeros à esquerda
+// ex: "067" → "67" | " 9200 " → "9200"
+function normalizarLinha(codigo)
+{
+    return String(codigo ?? "").trim().toUpperCase().replace(/^0+/, "");
+}
 
 function iniciarapp()
 {
@@ -54,18 +67,18 @@ function atualizarMapa()
     {
         const bus = ONIBUS[i];
 
+        // CORRIGIDO: comparação exata normalizada
         if(linhaBuscada !== null)
-        {      
-            const linha = String(bus.NL).trim();
-            const buscando = String(linhaBuscada).trim();
+        {
+            const linhaDoOnibus = normalizarLinha(bus.NL);
+            const buscando = normalizarLinha(linhaBuscada);
 
-            if(!linhaDoOnibus.includes(buscando))
+            if(linhaDoOnibus !== buscando)
             {
                 continue;
             }
-
-
         }
+
         //console.log(bus);
 
         // TESTE TEMPORÁRIO
@@ -108,6 +121,108 @@ function atualizarMapa()
     
 }
 
+// Atualiza os pontos de parada no mapa filtrando pela linha selecionada
+function atualizarPontos()
+{
+    // Remove pontos antigos
+    for (let i = 0; i < marcadores_pontos.length; i++) {
+        mapa.removeLayer(marcadores_pontos[i]);
+    }
+    marcadores_pontos = [];
+
+    for (let i = 0; i < PONTOS.itens; i++) {
+        const pos = PONTOS.Posicao[i];
+        const linha = PONTOS.Linhas[i];
+
+        if (!pos || isNaN(pos[0]) || isNaN(pos[1])) continue;
+
+        // Se tiver filtro, mostra só os pontos daquela linha
+        if(linhaBuscada !== null)
+        {
+            const codigoLinha = normalizarLinha(linha.Codigo);
+            const buscando = normalizarLinha(linhaBuscada);
+
+            if(codigoLinha !== buscando) continue;
+        }
+
+        let circulo = L.circleMarker(pos, {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.5,
+            radius: 2
+        });
+
+        circulo.bindPopup(`<b>Linha:</b> ${linha.Codigo}`);
+        circulo.addTo(mapa);
+        marcadores_pontos.push(circulo);
+    }
+}
+
+// Pega onde o usuario ta e acha o ponto de onibus mais perto
+function destacarPontoMaisProximo()
+{
+    // Remove marcador anterior se existir
+    if (marcadorProximo !== null) {
+        mapa.removeLayer(marcadorProximo);
+        marcadorProximo = null;
+    }
+
+    if (linhaBuscada === null) return;
+
+    navigator.geolocation.getCurrentPosition((position) => {
+        var userLat = position.coords.latitude;
+        var userLng = position.coords.longitude;
+
+        var menorDistancia = 999999999;
+        var indiceMaisProximo = -1;
+
+        for (var i = 0; i < PONTOS.itens; i++) {
+            var pos = PONTOS.Posicao[i];
+            if (!pos || isNaN(pos[0]) || isNaN(pos[1])) continue;
+
+            // CORRIGIDO: usa NumLinha em vez de Codigo
+            var codigoLinha = normalizarLinha(PONTOS.Linhas[i].Codigo);
+            var buscando = normalizarLinha(linhaBuscada);
+
+            if(codigoLinha !== buscando) continue;
+
+            var distancia = mapa.distance([userLat, userLng], pos);
+
+            if (distancia < menorDistancia) {
+                menorDistancia = distancia;
+                indiceMaisProximo = i;
+            }
+        }
+
+        if (indiceMaisProximo === -1) return;
+
+        var posProximo = PONTOS.Posicao[indiceMaisProximo];
+        var linhaProximo = PONTOS.Linhas[indiceMaisProximo];
+
+        // Remove marcador anterior se ainda existir
+        if (marcadorProximo !== null) {
+            mapa.removeLayer(marcadorProximo);
+            marcadorProximo = null;
+        }
+
+        // Cria marcador verde no ponto mais próximo
+        marcadorProximo = L.circleMarker(posProximo, {
+            color: 'green',
+            fillColor: '#0f0',
+            fillOpacity: 0.9,
+            radius: 10
+        });
+
+        // CORRIGIDO: popup com NumLinha
+        marcadorProximo.bindPopup(
+            "<b>Ponto mais próximo!</b><br>" +
+            "<b>Linha:</b> " + linhaProximo.Codigo
+        ).openPopup();
+
+        marcadorProximo.addTo(mapa);
+    });
+}
+
 async function carregarMapa()
 {
     // CORRIGIDO: busca a primeira posição válida para não quebrar se a primeira for nula
@@ -120,22 +235,22 @@ async function carregarMapa()
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | Coltec UFMG'
     }).addTo(mapa);
 
-    for(let i = 0; i < PONTOS.itens; i++)
-{
-    const pos = PONTOS.Posicao[i];
+    // CORRIGIDO: pontos aparecem sempre, independente da geolocalização
+    atualizarPontos();
 
-    // Ignora posições inválidas
-    if(!pos || isNaN(pos[0]) || isNaN(pos[1])) continue;
+    // Tenta pegar localização do usuário (opcional)
+    if(navigator.geolocation)
+    {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
 
-    let circulo = L.circleMarker(pos, {
-        color: 'red',
-        fillColor: '#f03',
-        fillOpacity: 0.5,
-        radius: 2
-    });
-
-    circulo.addTo(mapa);
-}
+            // Cria o marcador na sua localização e adiciona ao mapa
+            L.marker([lat, lon]).addTo(mapa)
+                .bindPopup("Você está aqui!")
+                .openPopup();
+        });
+    }
 }
 
 
@@ -164,7 +279,7 @@ async function atualizarOnibus()
         const response = await fetch(urlAPI);
         const data = await response.json();
         
- // ADICIONA ISSO TEMPORARIAMENTE
+        // ADICIONA ISSO TEMPORARIAMENTE
         console.log("Primeiro ônibus:", data[0]);
         console.log("Todos os campos:", Object.keys(data[0]));
 
@@ -258,9 +373,6 @@ function carregarPONTOS()
     });
 }
 
-// Guarda o filtro ativo (null = mostrar todos)
-let linhaBuscada = null;
-
 function buscarLinha()
 {
     // Pega o texto digitado e remove espaços extras
@@ -270,6 +382,13 @@ function buscarLinha()
     if(texto === "")
     {
         linhaBuscada = null;
+
+        // Remove marcador do ponto mais próximo ao limpar a busca
+        if(marcadorProximo !== null)
+        {
+            mapa.removeLayer(marcadorProximo);
+            marcadorProximo = null;
+        }
     }
     else
     {
@@ -278,6 +397,8 @@ function buscarLinha()
 
     // Redesenha o mapa com o filtro aplicado
     atualizarMapa();
+    atualizarPontos();
+    destacarPontoMaisProximo();
 }
 
 // Conecta o botão ao buscarLinha
